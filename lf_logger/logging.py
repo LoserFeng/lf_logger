@@ -126,9 +126,10 @@ def setup_logging(
     if with_file_log:
         if folder is None:
             folder = './logs'
-        # We need to get the rank in a reliable way, even if distributed is not yet initialized.
-        filename= f'{log_name}.log'
-        fh = logging.FileHandler(Path(folder) / filename)
+        folder_path = Path(folder)
+        folder_path.mkdir(parents=True, exist_ok=True)  # 确保目录存在
+        filename = f'{log_name}.log'
+        fh = logging.FileHandler(folder_path / filename)
         fh.setLevel(level)
         fh.setFormatter(formatter)
         root_logger.addHandler(fh)
